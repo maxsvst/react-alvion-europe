@@ -8,6 +8,14 @@ export interface IItem {
   cost: number
 }
 
+export interface IFormData {
+  subject: string
+  description: string
+  createdBy: string
+  startDate: Date
+  endDate: Date
+}
+
 export interface ProjectsState {
   list: IItem[]
   projectId: number | null
@@ -25,3 +33,5 @@ export type IButtonProps = {
 export type IAddForm = {
   data: string
 }
+
+export type IHandleChangeArgs = React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>

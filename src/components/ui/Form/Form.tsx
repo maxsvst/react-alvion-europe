@@ -27,7 +27,7 @@ export default function Form() {
       const completedData = { id: Date.now(), ...validatedData }
       dispatch(addListTolocalStorage(completedData))
       dispatch(setCurrentProjectId(completedData.id))
-      navigate(`/projects/${completedData.id}`)
+      navigate(`/projects`)
     } catch (error) {
       console.error("Невалидный JSON");
       return;

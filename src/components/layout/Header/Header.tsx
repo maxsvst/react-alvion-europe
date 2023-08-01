@@ -1,25 +1,18 @@
-import { useSelector } from "react-redux";
 import { useLocation, Link } from "react-router-dom";
 import { IPage } from "../../../types";
-import { RootState } from "../../../store/store";
 
 import styles from "./Header.module.css";
 
 export default function Header() {
-  const { projectId } = useSelector(
-    (state: RootState) => state?.reducer.projects
-  );
-
   const pages = [
     { name: "Данные", to: "/" },
-    { name: "Проекты", to: `/projects/${projectId}` },
+    { name: "Проекты", to: "/projects" },
   ];
 
   const location = useLocation();
 
   const linkClassName = (page: IPage) =>
     location.pathname === page.to ? styles.active_link : styles.link
-
 
   return (
     <header className={styles.header}>

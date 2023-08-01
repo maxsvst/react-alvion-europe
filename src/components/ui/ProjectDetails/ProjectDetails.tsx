@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -7,7 +7,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import Button from "../Button/Button";
 import { addListTolocalStorage, deleteListElement } from "../../../features/projectsSlice";
-import { IItem } from "../../../types/index";
+import { IFormData, IHandleChangeArgs, IItem } from "../../../types/index";
 import { RootState } from "../../../store/store";
 
 export default function ProjectDetails() {
@@ -20,31 +20,35 @@ export default function ProjectDetails() {
     list !== null ? list[0] : null
   );
 
-  const [subject, setSubject] = useState(currentProject?.subject)
-  const [startDate, setStartDate] = useState<Date>(new Date(currentProject?.startDate!));
-  const [endDate, setEndDate] = useState<Date>(new Date(currentProject?.endDate!));
-  const [createdBy, setCreatedBy] = useState(currentProject?.createdBy);
-  const [description, setDescription] = useState(currentProject?.description);
+  const [formData, setFormData] = useState<IFormData>({
+    subject: currentProject?.subject!,
+    description: currentProject?.description!,
+    createdBy: currentProject?.createdBy!,
+    startDate: new Date(currentProject?.startDate!),
+    endDate: new Date(currentProject?.endDate!)
+  })
 
   useEffect(() => {
-    list &&
-      projectId &&
-      setCurrentProject(list.find((item) => item.id === projectId)!);
-    setSubject(currentProject?.subject)
-    setStartDate(new Date(currentProject?.startDate!));
-    setEndDate(new Date(currentProject?.endDate!));
-    setCreatedBy(currentProject?.createdBy);
-    setDescription(currentProject?.description);
+    if (list && projectId) {
+      setCurrentProject(list.find((item) => item.id === projectId)!)
+    }
+    setFormData({
+      subject: currentProject?.subject!,
+      description: currentProject?.description!,
+      createdBy: currentProject?.createdBy!,
+      startDate: new Date(currentProject?.startDate!),
+      endDate: new Date(currentProject?.endDate!)
+    })
   }, [currentProject, list, projectId]);
 
   const handleClick = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const data = {
-      subject,
-      description,
-      createdBy,
-      startDate: startDate.toISOString(),
-      endDate: endDate.toISOString(),
+      subject: formData.subject,
+      description: formData.description,
+      createdBy: formData.createdBy,
+      startDate: formData.startDate.toISOString(),
+      endDate: formData.endDate.toISOString(),
     }
     const elementToChange = list.filter(item => item.id === projectId)[0]
     const changedElement = { id: elementToChange.id, ...data, cost: elementToChange.cost }
@@ -52,21 +56,37 @@ export default function ProjectDetails() {
     dispatch(addListTolocalStorage(changedElement))
   };
 
+  const handleTextInputChange = (e: IHandleChangeArgs) => {
+    const { name, value } = e.target
+    setFormData({
+      ...formData,
+      [name]: value
+    })
+  }
+
+  const handleDateInputChange = (name: string, value: Date | null) => {
+    setFormData({
+      ...formData,
+      [name]: value
+    })
+  }
+
   return (
     currentProject && (
       <div className={styles.wrapper}>
         <form onSubmit={e => (handleClick(e))} className={styles.form}>
           <input
             name="subject"
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
+            value={formData.subject}
+            onChange={handleTextInputChange}
             className={styles.title} />
           <div className={styles.details}>
             <div className={styles.date_wrapper}>
               <span className={styles.name}>Дата начала</span>
               <DatePicker
-                selected={startDate}
-                onChange={(date: Date | null) => setStartDate(date!)}
+                name="startDate"
+                selected={formData.startDate}
+                onChange={(date) => handleDateInputChange('startDate', date)}
                 dateFormat="dd.MM.yyyy"
                 className={styles.date_picker}
               />
@@ -74,8 +94,9 @@ export default function ProjectDetails() {
             <div className={styles.date_wrapper}>
               <span className={styles.name}>Дата окончания</span>
               <DatePicker
-                selected={endDate}
-                onChange={(date: Date | null) => setEndDate(date!)}
+                name="endDate"
+                selected={formData.endDate}
+                onChange={(date) => handleDateInputChange('endDate', date)}
                 dateFormat="dd.MM.yyyy"
                 className={styles.date_picker}
               />
@@ -84,8 +105,8 @@ export default function ProjectDetails() {
               <span className={styles.name}>Автор</span>
               <input
                 name="createdBy"
-                value={createdBy}
-                onChange={(e) => setCreatedBy(e.target.value)}
+                value={formData.createdBy}
+                onChange={handleTextInputChange}
                 className={styles.createdby}
               />
             </div>
@@ -93,8 +114,8 @@ export default function ProjectDetails() {
               <span className={styles.description_title}>Описание</span>
               <textarea
                 name="description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
+                value={formData.description}
+                onChange={handleTextInputChange}
                 className={styles.description}
               />
             </div>
