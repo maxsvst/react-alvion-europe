@@ -1,0 +1,43 @@
+.list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-width: 400px;
+    min-width: 140px;
+    max-height: 450px;
+    border: 3px solid gray;
+    overflow-y: hidden;
+    overflow-y: scroll;
+}
+
+.list::-webkit-scrollbar {
+    display: none;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.list_item {
+    padding: 0.5rem;
+    border-bottom: 3px solid gray;
+    cursor: pointer;
+}
+
+.date {
+    color: gray;
+    font-size: 0.8rem;
+}
+
+.subject {
+    color: black;
+    font-size: 1.35rem;
+    font-weight: 500;
+    margin: 0.2rem 0;
+}
+
+.name {
+    color: gray;
+    text-align: right;
+    font-size: 0.8rem;
+}
