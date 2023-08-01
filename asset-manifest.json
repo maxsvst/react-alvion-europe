@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/react-alvion-europe/static/css/main.2f91a513.css",
+    "main.js": "/react-alvion-europe/static/js/main.3a92620b.js",
+    "index.html": "/react-alvion-europe/index.html",
+    "main.2f91a513.css.map": "/react-alvion-europe/static/css/main.2f91a513.css.map",
+    "main.3a92620b.js.map": "/react-alvion-europe/static/js/main.3a92620b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2f91a513.css",
+    "static/js/main.3a92620b.js"
+  ]
+}
