@@ -11,8 +11,8 @@ function App() {
       <BrowserRouter>
         <Header />
         <Routes>
-          <Route path="*" element={<Data />} />
-          <Route path="/projects" element={<Projects />} />
+          <Route path="/" element={<Data />} />
+          <Route path="/projects/:id" element={<Projects />} />
         </Routes>
       </BrowserRouter>
     </div>
