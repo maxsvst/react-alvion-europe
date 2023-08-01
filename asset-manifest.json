@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/react-alvion-europe/static/css/main.2f91a513.css",
-    "main.js": "/react-alvion-europe/static/js/main.203acaed.js",
+    "main.js": "/react-alvion-europe/static/js/main.ac041ea4.js",
     "index.html": "/react-alvion-europe/index.html",
     "main.2f91a513.css.map": "/react-alvion-europe/static/css/main.2f91a513.css.map",
-    "main.203acaed.js.map": "/react-alvion-europe/static/js/main.203acaed.js.map"
+    "main.ac041ea4.js.map": "/react-alvion-europe/static/js/main.ac041ea4.js.map"
   },
   "entrypoints": [
     "static/css/main.2f91a513.css",
-    "static/js/main.203acaed.js"
+    "static/js/main.ac041ea4.js"
   ]
 }
