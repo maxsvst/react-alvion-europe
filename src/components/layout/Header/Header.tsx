@@ -5,7 +5,7 @@ import styles from "./Header.module.css";
 
 export default function Header() {
   const pages = [
-    { name: "Данные", to: "*" },
+    { name: "Данные", to: "/" },
     { name: "Проекты", to: "/projects" },
   ];
 
