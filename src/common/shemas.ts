@@ -1,7 +1,9 @@
 import * as yup from 'yup'
 
 export const addSchema = yup
-  .object({
+  .object()
+  .noUnknown()
+  .shape({
     subject: yup.string().required("Должно содержаться поле 'subject'"),
     description: yup.string().required("Должно содержаться поле 'description'"),
     createdBy: yup.string().required("Должно содержаться поле 'createdBy'"),
