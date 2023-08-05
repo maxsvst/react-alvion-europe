@@ -17,8 +17,12 @@ export interface IFormData {
 }
 
 export interface ProjectsState {
-  list: IItem[]
+  list: IProjects | null
   projectId: number | null
+}
+
+export interface IProjects {
+  Projects: IItem[]
 }
 
 export interface IPage {

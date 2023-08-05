@@ -7,12 +7,12 @@ import { RootState } from "../../../store/store";
 
 export default function Projects() {
     const selector = useSelector(
-        (state: RootState) => state.reducer.projects.list
+        (state: RootState) => state.reducer.projects.list?.Projects
     );
 
     return (
         <div className={styles.main}>
-            {selector.length !== 0 ? (
+            {selector ? (
                 <>
                     <List />
                     <ProjectDetails />

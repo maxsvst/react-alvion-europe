@@ -2,23 +2,19 @@ import { createSlice } from '@reduxjs/toolkit'
 import { ProjectsState } from '../types'
 
 const initialState: ProjectsState = {
-  list: [],
+  list: null,
   projectId: null,
 }
 
 export const projectsSlice = createSlice({
-  name: 'projects',
+  name: 'data',
   initialState,
   reducers: {
     addListTolocalStorage: (state, action) => {
-      state.list?.push({
-        ...action.payload,
-      })
+      state.list = action.payload
     },
-    deleteListElement: (state) => {
-      const copy = { ...state }
-      copy.list = state.list.filter((item) => item.id !== state.projectId)
-      return copy
+    changeElement: (state, action) => {
+      state.list!.Projects[action.payload.id - 1] = action.payload
     },
     setCurrentProjectId: (state, action) => {
       state.projectId = action.payload
@@ -26,5 +22,5 @@ export const projectsSlice = createSlice({
   },
 })
 
-export const { addListTolocalStorage, deleteListElement, setCurrentProjectId } = projectsSlice.actions
+export const { addListTolocalStorage, changeElement, setCurrentProjectId } = projectsSlice.actions
 export default projectsSlice.reducer

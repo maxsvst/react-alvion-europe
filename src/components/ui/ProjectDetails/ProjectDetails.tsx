@@ -6,7 +6,7 @@ import styles from "./ProjectDetails.module.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-datepicker/dist/react-datepicker-cssmodules.css";
 import Button from "../Button/Button";
-import { addListTolocalStorage, deleteListElement } from "../../../features/projectsSlice";
+import { changeElement } from "../../../features/projectsSlice";
 import { IFormData, IHandleChangeArgs, IItem } from "../../../types/index";
 import { RootState } from "../../../store/store";
 
@@ -17,7 +17,7 @@ export default function ProjectDetails() {
   const dispatch = useDispatch()
 
   const [currentProject, setCurrentProject] = useState<IItem | null>(() =>
-    list !== null ? list[0] : null
+    list?.Projects !== null ? list!.Projects[0] : null
   );
 
   const [formData, setFormData] = useState<IFormData>({
@@ -30,18 +30,21 @@ export default function ProjectDetails() {
 
   useEffect(() => {
     if (list && projectId) {
-      setCurrentProject(list.find((item) => item.id === projectId)!)
+      setCurrentProject(list?.Projects.find((item) => item.id === projectId)!)
     }
-    setFormData({
-      subject: currentProject?.subject!,
-      description: currentProject?.description!,
-      createdBy: currentProject?.createdBy!,
-      startDate: new Date(currentProject?.startDate!),
-      endDate: new Date(currentProject?.endDate!)
-    })
+
+    if (currentProject) {
+      setFormData({
+        subject: currentProject?.subject!,
+        description: currentProject?.description!,
+        createdBy: currentProject?.createdBy!,
+        startDate: new Date(currentProject?.startDate!),
+        endDate: new Date(currentProject?.endDate!)
+      })
+    }
   }, [currentProject, list, projectId]);
 
-  const handleClick = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleClick = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const data = {
       subject: formData.subject,
@@ -50,10 +53,10 @@ export default function ProjectDetails() {
       startDate: formData.startDate.toISOString(),
       endDate: formData.endDate.toISOString(),
     }
-    const elementToChange = list.filter(item => item.id === projectId)[0]
-    const changedElement = { id: elementToChange.id, ...data, cost: elementToChange.cost }
-    dispatch(deleteListElement())
-    dispatch(addListTolocalStorage(changedElement))
+
+    const elementToChange = list?.Projects.filter(item => item.id === projectId)[0]
+    const changedElement = { id: elementToChange!.id, ...data, cost: elementToChange!.cost } // Собрать новый элемент
+    dispatch(changeElement(changedElement))
   };
 
   const handleTextInputChange = (e: IHandleChangeArgs) => {

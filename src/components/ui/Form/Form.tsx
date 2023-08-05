@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import styles from "./Form.module.css";
@@ -7,6 +7,7 @@ import Button from "../Button/Button";
 import { addListTolocalStorage, setCurrentProjectId } from "../../../features/projectsSlice";
 import { addSchema } from "../../../common/shemas";
 import { IAddForm } from "../../../types";
+import { RootState } from "../../../store/store";
 
 export default function Form() {
   const {
@@ -17,6 +18,9 @@ export default function Form() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const selector = useSelector(
+    (state: RootState) => state.reducer.projects.list?.Projects
+  );
 
   const errorClassname = errors.data ? styles.error_show : styles.error_hidden
 
@@ -24,10 +28,9 @@ export default function Form() {
     try {
       const parsedData = JSON.parse(data.data)
       const validatedData = await addSchema.validate(parsedData)
-      const completedData = { id: Date.now(), ...validatedData }
-      dispatch(addListTolocalStorage(completedData))
-      dispatch(setCurrentProjectId(completedData.id))
-      navigate(`/projects`)
+      dispatch(addListTolocalStorage(validatedData))
+      dispatch(setCurrentProjectId(selector![0].id))
+      navigate(`/projects/${selector![0].id}`)
     } catch (error) {
       console.error("Невалидный JSON");
       return;
@@ -39,7 +42,6 @@ export default function Form() {
       <div className={styles.wrapper}>
         <span className={styles.title}>Введите JSON:</span>
         <textarea
-          placeholder="Введите JSON-объект с полями subject, description, createdBy, startDate, endDate, cost"
           {...register("data", { required: true })}
           className={styles.textarea}
         />

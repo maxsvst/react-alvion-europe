@@ -9,7 +9,7 @@ import { IItem } from "../../../types";
 
 export default function List() {
   const selector = useSelector(
-    (state: RootState) => state.reducer.projects.list
+    (state: RootState) => state.reducer.projects.list?.Projects
   );
   const dispatch = useDispatch();
 
@@ -17,27 +17,30 @@ export default function List() {
     " - " +
     formatListDate(item.endDate)
 
+
   return (
-    selector && (
-      <ul className={styles.list}>
-        {selector.map((item) => (
-          <Link className={styles.link}
-            key={item.id}
-            to={`/projects/${item.id}`}>
-            <li
+    <>
+      {selector && (
+        <ul className={styles.list}>
+          {selector.map((item) => (
+            <Link className={styles.link}
               key={item.id}
-              onClick={() => dispatch(setCurrentProjectId(item.id))}
-              className={styles.list_item}
-            >
-              <div className={styles.date}>
-                {formatDate(item)}
-              </div>
-              <div className={styles.subject}>{item.subject}</div>
-              <div className={styles.name}>{item.createdBy}</div>
-            </li>
-          </Link>
-        ))}
-      </ul>
-    )
+              to={`/projects/${item.id}`}>
+              <li
+                key={item.id}
+                onClick={() => dispatch(setCurrentProjectId(item.id))}
+                className={styles.list_item}
+              >
+                <div className={styles.date}>
+                  {formatDate(item)}
+                </div>
+                <div className={styles.subject}>{item.subject}</div>
+                <div className={styles.name}>{item.createdBy}</div>
+              </li>
+            </Link>
+          ))}
+        </ul>
+      )}
+    </>
   );
 }
