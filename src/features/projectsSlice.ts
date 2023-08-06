@@ -3,7 +3,6 @@ import { ProjectsState } from '../types'
 
 const initialState: ProjectsState = {
   list: null,
-  projectId: null,
 }
 
 export const projectsSlice = createSlice({
@@ -14,13 +13,10 @@ export const projectsSlice = createSlice({
       state.list = action.payload
     },
     changeElement: (state, action) => {
-      state.list!.Projects[action.payload.id - 1] = action.payload
-    },
-    setCurrentProjectId: (state, action) => {
-      state.projectId = action.payload
+      state.list!.Projects[state.list!.Projects.findIndex((item) => item.id === action.payload.id)] = action.payload
     },
   },
 })
 
-export const { addListTolocalStorage, changeElement, setCurrentProjectId } = projectsSlice.actions
+export const { addListTolocalStorage, changeElement } = projectsSlice.actions
 export default projectsSlice.reducer

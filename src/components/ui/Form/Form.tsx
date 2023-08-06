@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useParams } from "react-router-dom";
 
 import styles from "./Form.module.css";
 import Button from "../Button/Button";
-import { addListTolocalStorage, setCurrentProjectId } from "../../../features/projectsSlice";
+import {
+  addListTolocalStorage,
+} from "../../../features/projectsSlice";
 import { addSchema } from "../../../common/shemas";
 import { IAddForm } from "../../../types";
-import { RootState } from "../../../store/store";
 
 export default function Form() {
   const {
@@ -18,9 +20,7 @@ export default function Form() {
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const selector = useSelector(
-    (state: RootState) => state.reducer.projects.list?.Projects
-  );
+  const { id = 1 } = useParams()
 
   const errorClassname = errors.data ? styles.error_show : styles.error_hidden
 
@@ -29,8 +29,7 @@ export default function Form() {
       const parsedData = JSON.parse(data.data)
       const validatedData = await addSchema.validate(parsedData)
       dispatch(addListTolocalStorage(validatedData))
-      dispatch(setCurrentProjectId(selector![0].id))
-      navigate(`/projects/${selector![0].id}`)
+      navigate(`/projects/${id}`)
     } catch (error) {
       console.error("Невалидный JSON");
       return;

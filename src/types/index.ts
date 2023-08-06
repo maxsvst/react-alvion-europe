@@ -18,7 +18,6 @@ export interface IFormData {
 
 export interface ProjectsState {
   list: IProjects | null
-  projectId: number | null
 }
 
 export interface IProjects {

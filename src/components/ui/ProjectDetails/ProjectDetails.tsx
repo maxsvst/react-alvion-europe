@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 import styles from "./ProjectDetails.module.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -10,11 +11,14 @@ import { changeElement } from "../../../features/projectsSlice";
 import { IFormData, IHandleChangeArgs, IItem } from "../../../types/index";
 import { RootState } from "../../../store/store";
 
+
 export default function ProjectDetails() {
-  const { list, projectId } = useSelector(
+  const { list } = useSelector(
     (state: RootState) => state?.reducer.projects
   );
   const dispatch = useDispatch()
+  const { id } = useParams()
+
 
   const [currentProject, setCurrentProject] = useState<IItem | null>(() =>
     list?.Projects !== null ? list!.Projects[0] : null
@@ -29,8 +33,8 @@ export default function ProjectDetails() {
   })
 
   useEffect(() => {
-    if (list && projectId) {
-      setCurrentProject(list?.Projects.find((item) => item.id === projectId)!)
+    if (list && id) {
+      setCurrentProject(list?.Projects.find((item) => Number(item.id) === Number(id))!)
     }
 
     if (currentProject) {
@@ -42,7 +46,7 @@ export default function ProjectDetails() {
         endDate: new Date(currentProject?.endDate!)
       })
     }
-  }, [currentProject, list, projectId]);
+  }, [currentProject, list, id]);
 
   const handleClick = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -54,8 +58,8 @@ export default function ProjectDetails() {
       endDate: formData.endDate.toISOString(),
     }
 
-    const elementToChange = list?.Projects.filter(item => item.id === projectId)[0]
-    const changedElement = { id: elementToChange!.id, ...data, cost: elementToChange!.cost } // Собрать новый элемент
+    const elementToChange = list?.Projects.filter(item => Number(item.id) === Number(id))[0]
+    const changedElement = { id: elementToChange!.id, ...data, cost: elementToChange!.cost }
     dispatch(changeElement(changedElement))
   };
 
@@ -75,8 +79,8 @@ export default function ProjectDetails() {
   }
 
   return (
-    currentProject && (
-      <div className={styles.wrapper}>
+    <div className={styles.wrapper}>
+      {currentProject ? (
         <form onSubmit={e => (handleClick(e))} className={styles.form}>
           <input
             name="subject"
@@ -124,8 +128,7 @@ export default function ProjectDetails() {
             </div>
           </div>
           <Button title="Изменить" />
-        </form>
-      </div>
-    )
-  );
+        </form>) : <span>Детальная информация этого проекта отсутствует, кликните на проект из списка</span>}
+    </div>
+  )
 }
